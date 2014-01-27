@@ -2,6 +2,8 @@
   "name":"nw-demo",
   "main":"index.html",
   "window": {
-    "toolbar": false
+    "toolbar": false,
+    "height": 600,
+    "width": 800
   }
 }

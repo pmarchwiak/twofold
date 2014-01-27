@@ -2,37 +2,31 @@
 <html>
   <head>
     <title>Diptych Maker</title>
+      <script src="lib/jquery-2.1.0.min.js"></script>
+      <script src="scripts.js"></script>
   </head>
   <body>
     <h1>Diptych Maker</h1>
 <style>
-#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
-#holder.hover { border: 10px dashed #333; }
+.holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+.holder.hover { border: 10px dashed #333; }
 </style>
-<div id="holder"></div>
+<div id="image-box">
+<div class="holder" id="holder1" style="float:left"></div>
+<div class="holder" id="holder2" style="float:right"></div>
+</div>
 <script>
 // prevent default behavior from changing page on dropped file
 window.ondragover = function(e) { e.preventDefault(); return false };
 window.ondrop = function(e) { e.preventDefault(); return false };
-
-var holder = document.getElementById('holder');
-holder.ondragover = function () { this.className = 'hover'; return false; };
-holder.ondragend = function () { this.className = ''; return false; };
-holder.ondrop = function (e) {
-  e.preventDefault();
-
-  for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-    var img = new Image();
-    img.src = e.dataTransfer.files[i].path;
-    img.width = 300;
-    img.height = 300;
-    holder.appendChild(img);
-    console.log(e.dataTransfer.files[i].path);
-  }
-  return false;
-};
 </script>
-    <form>
+    <div id="param-box">
+    <form id="params">
+     Left Image:
+        <input id="file1" type="file" name="file1">
+    Right Image:
+        <input id="file2" type="file" name="file2">
+        
       <div id="color-group"> 
       Color:
       <input type="radio" name="color" value="black">Black</input>
@@ -43,7 +37,9 @@ holder.ondrop = function (e) {
       Orientation:
       <input type="radio" name="orientation" value="horizontal">Horizontal</input>
       <input type="radio" name="orientation" value="vertical">Vertical</input>
+    <input id="make-button" type="button" value="Make Diptych!">
       </div>
     </form>
+    </div>
   </body>
 </html>
