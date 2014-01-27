@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Diptych Maker</title>
+  </head>
+  <body>
+    <h1>Diptych Maker</h1>
+<style>
+#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+#holder.hover { border: 10px dashed #333; }
+</style>
+<div id="holder"></div>
+<script>
+// prevent default behavior from changing page on dropped file
+window.ondragover = function(e) { e.preventDefault(); return false };
+window.ondrop = function(e) { e.preventDefault(); return false };
+
+var holder = document.getElementById('holder');
+holder.ondragover = function () { this.className = 'hover'; return false; };
+holder.ondragend = function () { this.className = ''; return false; };
+holder.ondrop = function (e) {
+  e.preventDefault();
+
+  for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+    var img = new Image();
+    img.src = e.dataTransfer.files[i].path;
+    img.width = 300;
+    img.height = 300;
+    holder.appendChild(img);
+    console.log(e.dataTransfer.files[i].path);
+  }
+  return false;
+};
+</script>
+    <form>
+      <div id="color-group"> 
+      Color:
+      <input type="radio" name="color" value="black">Black</input>
+      <input type="radio" name="color" value="white">White</input>
+      </div>
+
+      <div id="orientation-group">
+      Orientation:
+      <input type="radio" name="orientation" value="horizontal">Horizontal</input>
+      <input type="radio" name="orientation" value="vertical">Vertical</input>
+      </div>
+    </form>
+  </body>
+</html>
