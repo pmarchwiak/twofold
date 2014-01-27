@@ -72,11 +72,13 @@ $(document).ready(function () {
         }
     });
 
-    $("input:file").change(function () {
-        var fileName = $(this).val();
-        var fileNumber = $(this).target;
+    $("input:file").change(function (e) {
+        var fileName = $(e.target).val();
+        var fileInputId = $(e.target).attr('id');
+        var inputIdx = fileInputId.substring('file'.length);
+
         console.log("Chose file " + fileName);
-        setImage(fileName, 1);
+        setImage(fileName, inputIdx);
     });
 
     $("#make-button").click(function () {
