@@ -7,7 +7,7 @@ var fs = require('fs');
 // TODO get rid of this global
 var targetWidth = 0;
 
-function setImage(filePath, idx) {
+function setImage(filePath, idx, bgcolor) {
     $("#holder" + idx).empty();
     var img = new Image();
     img.id = "img" + idx;
@@ -51,7 +51,7 @@ function setImage(filePath, idx) {
             console.log("target width:" + targetWidth);
             var targetHeight = canvas.height - (margin * 2);
         }
-        //context.fillStyle = "#000000";
+        context.fillStyle = bgcolor;
         if (idx == '1') {
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
@@ -138,11 +138,13 @@ $(document).ready(function () {
         var fileName = $(e.target).val();
         var fileInputId = $(e.target).attr('id');
         if (fileInputId.indexOf("file") == 0) {
-            // input image
+            // handle an input image
             var inputIdx = fileInputId.substring('file'.length);
 
+            var bgcolor = $('input:radio[name=color]:checked').val();
+            console.log("bgcolor is " + bgcolor);
             console.log("Chose file " + fileName);
-            setImage(fileName, inputIdx);
+            setImage(fileName, inputIdx, bgcolor);
         }
     });
 
@@ -169,5 +171,6 @@ $(document).ready(function () {
         $("#dropped-file1").val("");
         $("#dropped-file2").val("");
         $(".holder").empty();
+        $("#image-canvas")
     });
 });

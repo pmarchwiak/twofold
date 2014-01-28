@@ -24,25 +24,32 @@
     </script>
     <div id="param-box" style="clear:both">
         <form id="params">
+            <div id="color-group">
+                Background color:
+                <input type="radio" name="color" value="black" checked="true">Black</input>
+                <input type="radio" name="color" value="white">White</input>
+            </div>
+
             <p>
-                OR select them from the file system:
+                Select some photos:
             </p>
             <input hidden="true" id="dropped-file1">
             <input hidden="true" id="dropped-file2">
             <input id="file1" type="file" name="file1">
             <input id="file2" type="file" name="file2">
 
-            <div id="color-group">
-                Color:
-                <input type="radio" name="color" value="black" checked>Black</input>
-                <input type="radio" name="color" value="white">White</input>
-            </div>
+            <br>
+            <br>
 
+            <!--
             <div id="orientation-group">
                 Orientation:
                 <input type="radio" name="orientation" value="horizontal" checked>Horizontal</input>
                 <input type="radio" name="orientation" value="vertical">Vertical</input>
             </div>
+			-->
+            <br>
+            <p>Export as PNG:</p>
             <input id="make-button" type="file" nwsaveas value="Make Diptych!">
             <input id="clear-button" type="button" value="Clear All">
         </form>
