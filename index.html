@@ -2,22 +2,21 @@
 <html>
 
 <head>
-    <title>Diptych Maker</title>
+    <title>Twofold</title>
     <script src="lib/jquery-2.1.0.min.js"></script>
+    <script src="lib/base64.js"></script>
+    <script src="lib/canvas2image.js"></script>
     <script src="scripts.js"></script>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-    <h1>Diptych Maker</h1>
+    <h1>Twofold</h1>
     <style>
-        .holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+        .holder { border: 10px dashed #ccc; width: 3px; height: 3px; margin: 20px auto;}
         .holder.hover { border: 10px dashed #333; }
     </style>
-    <div id="image-box">
-        <div class="holder" id="holder1" style="float:left">Drag an image here!</div>
-        <div class="holder" id="holder2" style="float:right">Drag a second image here!</div>
-    </div>
-    <canvas id="image-canvas" width="600px" height="300px"></canvas>
+    <canvas id="image-canvas" width="400px" height="300px"></canvas>
     <script>
         // prevent default behavior from changing page on dropped file
         window.ondragover = function(e) { e.preventDefault(); return false };
@@ -44,7 +43,7 @@
                 <input type="radio" name="orientation" value="horizontal" checked>Horizontal</input>
                 <input type="radio" name="orientation" value="vertical">Vertical</input>
             </div>
-            <input id="make-button" type="button" value="Make Diptych!">
+            <input id="make-button" type="file" nwsaveas value="Make Diptych!">
             <input id="clear-button" type="button" value="Clear All">
         </form>
     </div>

@@ -2,22 +2,66 @@
 /*global document: false */
 /*global $,console */
 var spawn = require('child_process').spawn;
+var fs = require('fs');
 
 function setImage(filePath, idx) {
     $("#holder" + idx).empty();
     var img = new Image();
     img.id = "img" + idx;
     img.src = filePath;
-    img.width = 300;
-    img.height = 300;
-    
-    var context = $("#image-canvas")[0].getContext("2d");
-    
-    img.onload = function() {
-    	context.drawImage(img, 0, 0);
+    //img.width = 300;
+    //img.height = 300;
+
+    var canvas = $("#image-canvas")[0];
+    var context = canvas.getContext("2d");
+
+    img.onload = function () {
+        var margin = 5;
+        var natHeight = img.naturalHeight;
+        var natWidth = img.naturalWidth;
+        var multiplier = (300 - (margin * 2)) / natWidth;
+
+        if (idx == '1') {
+            //loading first image, scale to ideal size of canvas
+
+            // BAD!! define these outside of if 
+            var targetHeight = 300;
+            var multiplier = targetHeight / natHeight;
+            var targetWidth = multiplier * natWidth;
+            var canvWidth = (targetWidth * 2) + (margin * 3);
+            var canvHeight = targetHeight + (margin * 2);
+            if (natWidth > natHeight) {
+                // TODO finish this case
+                canvHeight = (natHeight * 2) + (margin * 3);
+                canvWidth = natWidth + (margin * 2);
+            }
+
+            canvas.height = canvHeight;
+            canvas.width = canvWidth;
+        } else {
+            // loading 2nd image, scale to existing size of canvas
+
+            // portrait source images case
+            var targetWidth = (canvas.width / 2) - (margin * 3);
+            var targetHeight = canvas.height - (margin * 2);
+        }
+        //context.fillStyle = "#000000";
+        if (idx == '1') {
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        var xOffset = margin;
+        var yOffset = margin;
+        if (idx != '1') {
+            // double portrait case
+            xOffset = (margin * 2) + targetWidth;
+        }
+        console.log("drawing image " + img.src + " " + xOffset + " " + yOffset +
+            " " + targetWidth + " " + targetHeight);
+        context.drawImage(img, xOffset, yOffset, targetWidth, targetHeight);
     };
-    
-    $("#holder" + idx).append(img);
+
+    //$("#holder" + idx).append(img);
 }
 
 function createDiptych(img1, img2, orientation, borderColor) {
@@ -41,7 +85,7 @@ function createDiptych(img1, img2, orientation, borderColor) {
 $(document).ready(function () {
     console.log("ready!");
     var holders = $(".holder");
-    
+
     holders.on('dragover', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -82,45 +126,34 @@ $(document).ready(function () {
     var canvas = $("#image-canvas")[0];
     var context = canvas.getContext("2d");
     context.setLineDash([6]);
-    context.strokeRect(0,0,50,50);
-    
+    context.strokeRect(0, 0, 400, 300);
+
     $("input:file").change(function (e) {
         var fileName = $(e.target).val();
         var fileInputId = $(e.target).attr('id');
-        var inputIdx = fileInputId.substring('file'.length);
+        if (fileInputId.indexOf("file") == 0) {
+            // input image
+            var inputIdx = fileInputId.substring('file'.length);
 
-        console.log("Chose file " + fileName);
-        setImage(fileName, inputIdx);
+            console.log("Chose file " + fileName);
+            setImage(fileName, inputIdx);
+        }
     });
 
-    $("#make-button").click(function () {
-        var values = {};
-        $.each($('#params').serializeArray(), function (i, field) {
-            console.log("field: " + field);
-            values[field.name] = field.value;
+    $("#make-button").change(function (e) {
+        var fileName = $(e.target).val();
+        var canvas = $("#image-canvas")[0];
+        var src = canvas.toDataURL();
+		var imgstr = String(src).substring(22); // figure out what this magic # is
+        
+		fs.writeFile(fileName, new Buffer(imgstr, 'base64'), function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("The file " + fileName + " was saved!");
+            }
         });
-        console.log(values);
-
-        // serializeArray does not work on file inputs
-        var img1 = $('#file1').val();
-        if (img1 == "") {
-            img1 = $("#dropped-file1").val();
-        }
-        var img2 = $('#file2').val();
-        if (img2 == "") {
-            img2 = $("#dropped-file2").val();
-        }
-
-        if (!img1 || img1 == "") {
-            console.log("img1 not selected");
-            return;
-        }
-        if (!img2 || img2 == "") {
-            console.log("img2 not selected");
-            return;
-        }
-
-        createDiptych(img1, img2, '', values = ['color']);
+        return;
     });
 
     $("#clear-button").click(function () {
