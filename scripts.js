@@ -4,6 +4,9 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
+// TODO get rid of this global
+var targetWidth = 0;
+
 function setImage(filePath, idx) {
     $("#holder" + idx).empty();
     var img = new Image();
@@ -27,7 +30,8 @@ function setImage(filePath, idx) {
             // BAD!! define these outside of if 
             var targetHeight = 300;
             var multiplier = targetHeight / natHeight;
-            var targetWidth = multiplier * natWidth;
+            targetWidth = multiplier * natWidth;
+            console.log("target width: " + targetWidth);
             var canvWidth = (targetWidth * 2) + (margin * 3);
             var canvHeight = targetHeight + (margin * 2);
             if (natWidth > natHeight) {
@@ -42,7 +46,9 @@ function setImage(filePath, idx) {
             // loading 2nd image, scale to existing size of canvas
 
             // portrait source images case
-            var targetWidth = (canvas.width / 2) - (margin * 3);
+            console.log("canvas width " + canvas.width);
+            //var targetWidth = (canvas.width / 2) - (margin * 3);
+            console.log("target width:" + targetWidth);
             var targetHeight = canvas.height - (margin * 2);
         }
         //context.fillStyle = "#000000";
@@ -144,9 +150,9 @@ $(document).ready(function () {
         var fileName = $(e.target).val();
         var canvas = $("#image-canvas")[0];
         var src = canvas.toDataURL();
-		var imgstr = String(src).substring(22); // figure out what this magic # is
-        
-		fs.writeFile(fileName, new Buffer(imgstr, 'base64'), function (err) {
+        var imgstr = String(src).substring(22); // figure out what this magic # is
+
+        fs.writeFile(fileName, new Buffer(imgstr, 'base64'), function (err) {
             if (err) {
                 console.log(err);
             } else {
