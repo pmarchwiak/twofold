@@ -10,6 +10,13 @@ function setImage(filePath, idx) {
     img.src = filePath;
     img.width = 300;
     img.height = 300;
+    
+    var context = $("#image-canvas")[0].getContext("2d");
+    
+    img.onload = function() {
+    	context.drawImage(img, 0, 0);
+    };
+    
     $("#holder" + idx).append(img);
 }
 
@@ -72,6 +79,11 @@ $(document).ready(function () {
         }
     });
 
+    var canvas = $("#image-canvas")[0];
+    var context = canvas.getContext("2d");
+    context.setLineDash([6]);
+    context.strokeRect(0,0,50,50);
+    
     $("input:file").change(function (e) {
         var fileName = $(e.target).val();
         var fileInputId = $(e.target).attr('id');
