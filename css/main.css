@@ -1,7 +1,12 @@
-#canvas-image {
-    width: 100%;
-    text-align: center;
+#image-canvas {
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+    margin: 0 auto;
 }
-canvas {
-    display: inline;
+body {
+    background-color: #b0c4de;
+}
+h1 {
+    text-align: center;
 }

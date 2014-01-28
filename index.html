@@ -16,12 +16,15 @@
         .holder { border: 10px dashed #ccc; width: 3px; height: 3px; margin: 20px auto;}
         .holder.hover { border: 10px dashed #333; }
     </style>
-    <canvas id="image-canvas" width="400px" height="300px"></canvas>
+    <div id="canvas-container">
+        <canvas id="image-canvas" width="400px" height="300px"></canvas>
+    </div>
     <script>
         // prevent default behavior from changing page on dropped file
         window.ondragover = function(e) { e.preventDefault(); return false };
         window.ondrop = function(e) { e.preventDefault(); return false };
     </script>
+    <br>
     <div id="param-box" style="clear:both">
         <form id="params">
             <div id="color-group">
@@ -39,8 +42,6 @@
             <input id="file2" type="file" name="file2">
 
             <br>
-            <br>
-
             <!--
             <div id="orientation-group">
                 Orientation:

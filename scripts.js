@@ -28,7 +28,7 @@ function setImage(filePath, idx, bgcolor) {
             //loading first image, scale to ideal size of canvas
 
             // BAD!! define these outside of if 
-            var targetHeight = 300;
+            var targetHeight = 300 - (margin * 2);
             var multiplier = targetHeight / natHeight;
             targetWidth = multiplier * natWidth;
             console.log("target width: " + targetWidth);
@@ -40,8 +40,8 @@ function setImage(filePath, idx, bgcolor) {
                 canvWidth = natWidth + (margin * 2);
             }
 
-            canvas.height = canvHeight;
-            canvas.width = canvWidth;
+            //canvas.height = canvHeight;
+            //canvas.width = canvWidth;
         } else {
             // loading 2nd image, scale to existing size of canvas
 
@@ -133,6 +133,9 @@ $(document).ready(function () {
     var context = canvas.getContext("2d");
     context.setLineDash([6]);
     context.strokeRect(0, 0, 400, 300);
+    context.moveTo(200,0);
+	context.lineTo(200,300);
+	context.stroke();
 
     $("input:file").change(function (e) {
         var fileName = $(e.target).val();
